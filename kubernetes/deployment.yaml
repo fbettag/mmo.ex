@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mmo-game
+  namespace: mmo-system
+  labels:
+    app: mmo
+    release: production
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mmo
+      release: production
+  template:
+    metadata:
+      labels:
+        app: mmo
+        release: production
+    spec:
+      containers:
+        - name: mmo
+          image: "cr.k8s.el8.nl/mmo/game:latest"
+          imagePullPolicy: Always
+          env:
+            - name: "MIX_ENV"
+              value: "prod"
+            - name: "PORT"
+              value: "4000"
+            - name: "PORTAL_HOST"
+              value: "mmo.k8s.el8.nl"
+            - name: "SECRET_KEY_BASE"
+              value: "MfBK2rQKH5sBGwJ+WOHrVv3+lWJSkGH4hq1X2muapO1CUveEtvHDD8K+hNP6DB2t"
+            - name: "SIGNING_SALT"
+              value: "qKOIFmOmkwA1D9HqDDWOAdx/jBCkOQS6voNvE5uwNCOIvehNRn+HOR7tLCs5DZ6S"
+            
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+
+          #startupProbe:
+          #  httpGet:
+          #    path: /health
+          #    port: 4000
+          #  periodSeconds: 3
+          #  failureThreshold: 5
+
+          #livenessProbe:
+          #  httpGet:
+          #    path: /health
+          #    port: 4000
+          #  periodSeconds: 10
+          #  failureThreshold: 6
+
+          #readinessProbe:
+          #  httpGet:
+          #    path: /health
+          #    port: 4000
+          #  periodSeconds: 10
+          #  failureThreshold: 1
+
+          resources:
+            {}

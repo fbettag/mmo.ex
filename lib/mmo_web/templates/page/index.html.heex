@@ -1,0 +1,8 @@
+<section class="phx-hero">
+  <h1>Welcome to the unbelievable MMO!</h1>
+  <%= form_for @conn, Routes.page_path(@conn, :index), fn f -> %>
+    <p>Please enter your name:</p>
+    <%= text_input f, :name, style: "width: 50%; text-align: center", value: "Player" %><br/>
+    <%= submit "Submit" %>
+  <% end %>
+</section>

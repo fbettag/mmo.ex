@@ -1,0 +1,55 @@
+<%= if assigns[:player] != nil do %>
+    <div style="margin-left: auto; margin-right: auto; width: 570px" phx-window-keyup="keyup">
+        Your name: <%= @player.name %>
+        <span style="margin-left: 20px">
+            <%= if @player.alive == true do %>
+                <span style="color: green">ALIVE</span>
+            <% else %>
+                <span style="color: red">DEAD - respawning..</span>
+            <% end %>
+        </span>
+        <br/><br/>
+
+        <%= if assigns[:board] == nil do %>
+            <h3>Joining...</h3>
+        <% else %>
+            <div class="wrapper" style="grid-template-columns: <%= @col_widths %>;">
+                <%= for row <- @rows do %>
+                    <%= for col <- @cols do %>
+                        <%= if MMO.Game.Board.is_wall?(@board, row, col) do %>
+                            <div class="box" style="background-color: black;">wall</div>
+                        <% else %>
+                            <div class="box <%= if assigns[:fired] != nil and MMO.Game.Player.fired?(@fired, row, col), do: "fired" %>">
+                                <div style="color: blue">
+                                    <%= if @player.alive == true and MMO.Game.Player.is_here?(@player, row, col), do: @player.name %>
+                                </div>
+                                <div style="color: red">
+                                    <%= @board.players
+                                    |> Enum.filter(&(&1.name != @player.name and &1.alive == true and MMO.Game.Player.is_here?(&1, row, col)))
+                                    |> Enum.map_join(", ", &(&1.name)) %>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            </div>
+
+            <div class="buttons">
+                <button phx-click="keyup" phx-value-key="ArrowLeft">left</button>
+                <button phx-click="keyup" phx-value-key="ArrowUp">up</button>
+                <button phx-click="keyup" phx-value-key="ArrowDown">down</button>
+                <button phx-click="keyup" phx-value-key="ArrowRight">right</button>
+                <button phx-click="keyup" phx-value-key="Enter" class="attack">attack</button>
+            </div>
+
+            <div style="margin-top: 20px">
+                The following keyboard keys can be also used to play the game:
+
+                <ul style="margin-top: 5px">
+                    <li>Enter - Fire at everyone within a one field radius</li>
+                    <li>Cursors Left, Right, Up, Down - Move around the Board</li>
+                </ul>
+            </div>
+        <% end %>
+    </div>
+<% end %>

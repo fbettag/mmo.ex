@@ -1,0 +1,8 @@
+_build/
+deps/
+.git/
+.gitignore
+Dockerfile
+README*
+test/
+#priv/static/

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mmo-game
+  namespace: mmo-system
+  labels:
+    app: mmo-game
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.org/websocket-services: mmo-game
+spec:
+  tls:
+    - secretName: mmo-system-tls
+      hosts:
+        - mmo.k8s.el8.nl
+  rules:
+    - host: mmo.k8s.el8.nl
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mmo-game
+                port:
+                  number: 80
