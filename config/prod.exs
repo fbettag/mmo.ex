@@ -31,7 +31,7 @@ config :mmo, MMOWeb.Endpoint,
   # pubsub: [name: MMO.PubSub, adapter: Phoenix.PubSub.PG2],
   # instrumenters: [MMOWeb.Endpoint.PhoenixInstrumenter]
   live_view: [
-    signing_salt: System.get_env("SIGNING_SALT")
+    signing_salt: "2CJ0/N1O9aus9QXplrTFMzOvngUCMWkUsv6t7q0Pnlohqo9xCrPHdZGPAEgnsXqC"
   ],
   check_origin: false,
   server: true,
